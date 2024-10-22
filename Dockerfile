@@ -1,13 +1,11 @@
-FROM jbarlow83/ocrmypdf
+FROM node:22-bookworm-slim
 
 RUN apt update
 
-RUN apt -y install qpdf
-RUN qpdf --version
-
-RUN apt -y install nodejs
-RUN node -v
-RUN apt -y install npm
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    qpdf \ 
+    ocrmypdf \
+    tesseract-ocr-chi-sim 
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -19,14 +17,11 @@ COPY package*.json ./
 
 RUN npm install
 # If you are building your code for production
-# RUN npm ci --omit=dev
+RUN npm ci --omit=dev
 
 # Bundle app source
 COPY . .
 
-RUN chmod 777 /usr/src/app/entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
-RUN which node
-
-EXPOSE 8080
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+EXPOSE 8888
