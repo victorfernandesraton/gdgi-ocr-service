@@ -6,7 +6,8 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid'); // We'll use the uuid library to generate random filenames
 
 const app = express();
-const port = process?.argv?.[0] ?? 8888;
+const port = process.argv?.[2] ?? 8888;
+console.log(`Using port ${port}`)
 
 // Set up Multer to handle file uploads
 const upload = multer({ dest: 'c:/tmp/' });
